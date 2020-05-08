@@ -46,7 +46,7 @@ namespace GhidraSymbolsExporter
 		{
 			Status.StopVisualFeedback();
 			if (Util.OutputPath != string.Empty)
-				InputFileDialog.InitialDirectory = Util.OutputPath;
+				OutputFileDialog.InitialDirectory = Util.OutputPath;
 			if (OutputFileDialog.ShowDialog() == DialogResult.OK)
 			{
 				OutputTextBox.Text = OutputFileDialog.FileName;
@@ -70,8 +70,6 @@ namespace GhidraSymbolsExporter
 					Directory.CreateDirectory(Util.OutputPath);
 
 					Exporter.LoadXmlDocument();
-					//if (Util.NDSProjectStandard)
-					//	Exporter.LoadMemorySections();
 					Exporter.ParseSymbols();
 					Exporter.ExportSymbolsFile();
 

@@ -296,7 +296,7 @@
 			this.MaximumSize = new System.Drawing.Size(1920, 246);
 			this.MinimumSize = new System.Drawing.Size(736, 246);
 			this.Name = "MainForm";
-			this.Text = "Nintendo DS Decompilation Project Maker";
+			this.Text = "Ghidra Symbols Exporter";
 			this.MainTblLytPanel.ResumeLayout(false);
 			this.ControlsTblLytPanel.ResumeLayout(false);
 			this.FileTblLytPanel.ResumeLayout(false);
