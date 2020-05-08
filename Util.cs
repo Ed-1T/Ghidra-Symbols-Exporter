@@ -54,10 +54,12 @@ namespace GhidraSymbolsExporter
 
 		// settings
 		public static bool NDSProjectStandard;
+		public static bool SkipSwitchSymbols;
 
 		public static void UpdateSettings()
 		{
 			NDSProjectStandard = Main.NDSStandardProjectCheckBox.Checked;
+			SkipSwitchSymbols = Main.SkipSwitchSymbolsCheckBox.Checked;
 		}
 	}
 }

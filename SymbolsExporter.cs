@@ -85,6 +85,19 @@ namespace GhidraSymbolsExporter
 
 				uint address = uint.Parse(sAddress, System.Globalization.NumberStyles.HexNumber);
 
+				uint min = 0x1000000;
+				uint max = 0x3000000;
+
+				// (arm7 can have access to shared wram)
+				if (overlay.StartsWith("arm7"))
+					max = 0x4000000;
+
+				if (address < min || address >= max)
+				{
+					Console.WriteLine("symbol {0:s} skipped (invalid address 0x{1:X8})", name, address);
+					continue;
+				}
+
 				if (overlay == string.Empty)
 					overlay = "arm9";
 
@@ -119,9 +132,11 @@ namespace GhidraSymbolsExporter
 				{
 					overlay = overlay.Replace(".bss", "");
 
-					if (overlay.StartsWith("arm9"))
+					// arm9 section
+					if (overlay.StartsWith("arm9") && !overlay.StartsWith("arm9_ov"))
 						overlay = "arm9";
-					else if (overlay.StartsWith("arm7"))
+					// arm7 section
+					else if (overlay.StartsWith("arm7") && !overlay.StartsWith("arm7_ov"))
 						overlay = "arm7";
 
 					if (overlay != lastOverlay)
@@ -134,11 +149,25 @@ namespace GhidraSymbolsExporter
 					lastOverlay = overlay;
 				}
 
+				Status.InitProgress();
+				Status.DivideProgress(symbols.Count);
+
+				int i = 0;
+
 				foreach (var sym in symbols)
 				{
+					Status.SetStatusText(string.Format("Writing symbols in overlay: {0:s} [{1:d}/{2:d}]", lastOverlay, ++i, symbols.Count));
+
+					if (Util.SkipSwitchSymbols && sym.name.StartsWith("switchD"))
+						continue;
+
 					// append symbol and address
 					lines.Add(string.Format("{0:s} = 0x{1:X8};", sym.name, sym.address));
+
+					Status.IncrementProgress();
 				}
+
+				Status.FillProgress();
 			}
 
 			File.WriteAllLines(Util.SymbolsPath, lines);

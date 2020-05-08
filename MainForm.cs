@@ -45,20 +45,12 @@ namespace GhidraSymbolsExporter
 		private void OutputBrowseButton_Click(object sender, EventArgs e)
 		{
 			Status.StopVisualFeedback();
-			if (OutputFolderDialog.ShowDialog() == DialogResult.OK)
+			if (Util.OutputPath != string.Empty)
+				InputFileDialog.InitialDirectory = Util.OutputPath;
+			if (OutputFileDialog.ShowDialog() == DialogResult.OK)
 			{
-				OutputTextBox.Text = OutputFolderDialog.SelectedPath;
+				OutputTextBox.Text = OutputFileDialog.FileName;
 				Status.UpdatePath();
-			}
-		}
-		private void OpenSymbolsButton_Click(object sender, EventArgs e)
-		{
-			Status.StopVisualFeedback();
-			if (Util.InputPath != string.Empty)
-				SymbolsFileDialog.InitialDirectory = Util.InputPath;
-			if (SymbolsFileDialog.ShowDialog() == DialogResult.OK)
-			{
-				Util.SymbolsPath = SymbolsFileDialog.FileName;
 			}
 		}
 

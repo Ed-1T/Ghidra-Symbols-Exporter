@@ -42,13 +42,10 @@ namespace GhidraSymbolsExporter
 		public static void UpdatePathStatusText()
 		{
 			CheckPathStatus();
-			bool exists = Directory.Exists(OutputPath);
 
 			if (ValidInput && ValidOutput)
 			{
-				SetStatusText("Ready, click Export to begin" +
-				(exists ? "" : " (directory will be created)"));
-
+				SetStatusText("Ready, click Export to begin");
 				UpdatePath();
 			}
 			else if (ValidInput && !ValidOutput)
