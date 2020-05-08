@@ -277,6 +277,8 @@
 			// SkipSwitchSymbolsCheckBox
 			// 
 			this.SkipSwitchSymbolsCheckBox.AutoSize = true;
+			this.SkipSwitchSymbolsCheckBox.Checked = true;
+			this.SkipSwitchSymbolsCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.SkipSwitchSymbolsCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.SkipSwitchSymbolsCheckBox.Location = new System.Drawing.Point(122, 3);
 			this.SkipSwitchSymbolsCheckBox.Name = "SkipSwitchSymbolsCheckBox";
