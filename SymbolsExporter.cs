@@ -35,14 +35,20 @@ namespace GhidraSymbolsExporter
 
 		private string RegexReplace(string name, string nameSpace)
 		{
+			if (name == string.Empty)
+				return "";
+
 			// string begins with a number
-			name = Regex.Replace(name, @"^[0-9]", "_");
+			if (name.First() >= '0' && name.First() <= '9')
+				name = name.Insert(0, "_");
 
 			// part of a namespace
 			if (nameSpace.EndsWith("::"))
 			{
 				// string begins with a number
-				nameSpace = Regex.Replace(nameSpace, @"^[0-9]", "_");
+				if (nameSpace.First() >= '0' && nameSpace.First() <= '9')
+					nameSpace = nameSpace.Insert(0, "_");
+
 				name = nameSpace + name;
 			}
 
@@ -58,6 +64,8 @@ namespace GhidraSymbolsExporter
 			var prg = Document.Element("PROGRAM");
 			var symTbl = prg.Element("SYMBOL_TABLE");
 			var symArr = symTbl.Elements("SYMBOL").ToArray();
+
+			int invalidSymbolID = 0;
 
 			foreach (var symbol in symArr)
 			{
@@ -101,11 +109,11 @@ namespace GhidraSymbolsExporter
 				if (overlay == string.Empty)
 					overlay = "arm9";
 
-				Console.WriteLine("overlay: {0:s}", overlay);
-				Console.WriteLine("address: 0x{0:X}", address);
-
 				// use regular expressions to replace illegal characters
 				name = RegexReplace(name, nameSpace);
+
+				if (name == string.Empty)
+					name = string.Format("invalid_symbol_name_{0:d}", ++invalidSymbolID);
 
 				// create list
 				if (!Symbols.ContainsKey(overlay))
@@ -113,6 +121,10 @@ namespace GhidraSymbolsExporter
 
 				// insert symbol (ordered by overlay)
 				Symbols[overlay].Add(new SymbolEntry(name, address));
+
+				Console.WriteLine("overlay: {0:s}", overlay);
+				Console.WriteLine("address: 0x{0:X}", address);
+				Console.WriteLine("name: '{0:s}'", name);
 			}
 		}
 
